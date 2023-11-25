@@ -1,34 +1,34 @@
 class Node:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+    def __init__(self, value): #construtor da classe Node, que recebe o parametro value
+        self.value = value #inicializa um atributo chamado value que recebe value como valor
+        self.left = None #inicializa um atributo chamado left que inicia vazio
+        self.right = None #inicializa um atributo chamado right que inicia vazio
 
 class ArvoreBinaria:
-    def __init__(self):
-        self.root = None
+    def __init__(self): #construtor da classe ArvoreBinaria
+        self.root = None #inicializa um atributo root (raiz) vazio
 
-    def __contem_recursivo(self, current_node, value):
-        if current_node is None:
-            return False
-        if value == current_node:
-            return True
-        if value < current_node.value:
-            return self.__contem_recursivo(current_node.left, value)
-        if value > current_node.value:
-            return self.__contem_recursivo(current_node.right, value)
+    def __contem_recursivo(self, current_node, value): #a função recursiva recebe os parametros self (ele mesmo), current_node (nó atual) e value (valor)
+        if current_node is None: #se o nó atual não existir:
+            return False #retorna Falso
+        if value == current_node: #se o valor procurado for igual ao da raíz:
+            return True #retorna True
+        if value < current_node.value: #se o valor procurado for menor que o nó atual:
+            return self.__contem_recursivo(current_node.left, value) #chama a função recursivamente começando pelo nó da esquerda, comparando com o valor procurado
+        if value > current_node.value: #se o valor procurado for maior que o nó atual:
+            return self.__contem_recursivo(current_node.right, value) #chama a função recursivamente começando pelo nó da direita, comparando com o valor procurado
         
-    def contem(self, value):
+    def contem(self, value): 
         return self.__contem_recursivo(self.root, value) #chama a função recursiva de verificação que está protegida
     
     def __insere_recursivo(self, current_node, value):
-        if current_node is None:
-            return Node(value)
-        if value < current_node.value:
-            current_node.left = self.__insere_recursivo(current_node.left, value)
-        if value > current_node.value:
-            current_node.right = self.__insere_recursivo(current_node.right, value)
-        return current_node
+        if current_node is None: #se o nó atual for vazio:
+            return Node(value) #nó atual recebe o valor inserido pelo usário
+        if value < current_node.value: #se o valor inserido pelo usuário for menor que o nó atual:
+            current_node.left = self.__insere_recursivo(current_node.left, value) #o valor inserido pelo usuário ficará a esquerda do nó atual
+        if value > current_node.value: #se o valor inserido pelo usuário for maior que o nó atual:
+            current_node.right = self.__insere_recursivo(current_node.right, value) #o valor inserido pelo usuário ficará a direita do nó atual
+        return current_node #retorna o nó atual
 
     def insere(self, value):
         if self.root is None: #se raiz estiver vazia:
