@@ -35,6 +35,34 @@ class ArvoreBinaria:
             self.root = Node(value) #a raiz receberá o valor do nó inserido
         self.__insere_recursivo(self.root, value) #chama a função recursiva de inserção que está protegida
 
+    def valor_minimo(self, current_node):
+        while current_node.left is not None:
+            current_node = current_node.left
+        return current_node.value
+    
+    def __deleta_no(self, current_node, value):
+        if current_node == None:
+            return None
+        if value < current_node.value:
+            current_node.left = self.__deleta_no(current_node.left, value)
+        elif value > current_node.value:
+            current_node.right = self.__deleta_no(current_node.right, value)
+        else:
+            if current_node.left == None and current_node.right == None:
+                return None
+            elif current_node.left == None:
+                current_node = current_node.right
+            elif current_node.right == None:
+                current_node = current_node.left
+            else:
+                sub_arvore_minima = self.valor_minimo(current_node.right)
+                current_node.value = sub_arvore_minima
+                current_node.right = self.__deleta_no(current_node.right, sub_arvore_minima)
+        return current_node
+    
+    def deleta_no(self, value):
+        self.__deleta_no(self.root, value)
+
     def BuscaEmLargura(self): #a Busca em Largura (BFS, Breadth First Search) busca os nós pelo nível, ou altura que eles se encontram
         current_node = self.root #define o nó atual sendo a raiz
         queue = [] #inicializa uma fila vazia
@@ -141,6 +169,8 @@ minha_arvore.insere(5)
 print('Raiz:', minha_arvore.root.value)
 print('Raiz - esquerda:', minha_arvore.root.left.value)
 print('Raiz - direita:', minha_arvore.root.right.value)
+print('Menor no da arvore eh:', minha_arvore.valor_minimo(minha_arvore.root))
+print('Menor no da sub-arvore da direta eh:', minha_arvore.valor_minimo(minha_arvore.root.right))
 print(minha_arvore.BuscaEmLargura())
 print(minha_arvore.BuscaEmLargura_contrario())
 print(minha_arvore.pre_ordem())
