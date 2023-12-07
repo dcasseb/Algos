@@ -17,10 +17,33 @@ class ArvoreBinaria:
             return self.__contem_recursivo(current_node.left, value) #chama a função recursivamente começando pelo nó da esquerda, comparando com o valor procurado
         if value > current_node.value: #se o valor procurado for maior que o nó atual:
             return self.__contem_recursivo(current_node.right, value) #chama a função recursivamente começando pelo nó da direita, comparando com o valor procurado
-        
-    def contem(self, value): 
+
+    def conta_nos(self):
+        return self.__conta_nos_recursivo(self.root)
+
+    def __conta_nos_recursivo(self, current_node):
+        if current_node is None:
+            return 0
+        return 1 + self.__conta_nos_recursivo(current_node.left) + self.__conta_nos_recursivo(current_node.right)
+
+    def get_altura(self):
+        return self.__get_altura_recursivo(self.root)
+
+    def __get_altura_recursivo(self, current_node):
+        if current_node is None:
+            return 0
+        else:
+            altura_esquerda = self.__get_altura_recursivo(current_node.left)
+            altura_direita = self.__get_altura_recursivo(current_node.right)
+
+            if altura_esquerda > altura_direita:
+                return altura_esquerda + 1
+            else:
+                return altura_direita + 1
+
+    def contem(self, value):
         return self.__contem_recursivo(self.root, value) #chama a função recursiva de verificação que está protegida
-    
+
     def __insere_recursivo(self, current_node, value):
         if current_node is None: #se o nó atual for vazio:
             return Node(value) #nó atual recebe o valor inserido pelo usário
@@ -39,7 +62,7 @@ class ArvoreBinaria:
         while current_node.left is not None:
             current_node = current_node.left
         return current_node.value
-    
+
     def __deleta_no(self, current_node, value):
         if current_node == None:
             return None
@@ -59,7 +82,7 @@ class ArvoreBinaria:
                 current_node.value = sub_arvore_minima
                 current_node.right = self.__deleta_no(current_node.right, sub_arvore_minima)
         return current_node
-    
+
     def deleta_no(self, value):
         self.__deleta_no(self.root, value)
 
@@ -77,11 +100,11 @@ class ArvoreBinaria:
             if current_node.right is not None: #se existir nó na direita:
                 queue.append(current_node.right) #o nó da direita e adicionado na última posição (append) atualizada da fila
         return resultados #o resultado retornado é a fila composta de todos os nós presentes na árvore que levaram 'pop' na busca
-    
+
     #implementar BuscaEmLargura de modo que a saida seja do ultimo nivel para o primeiro
     #no loop, mandar para a fila 'resultados' os nós da direita pra esquerda, ao invés da esquerda para direita, e imprimir a fila de trás pra frente
 
-    def BuscaEmLargura_contrario(self): #a Busca em Largura reversa busca os nós pela altura mais alta que eles se encontram até a raiz 
+    def BuscaEmLargura_contrario(self): #a Busca em Largura reversa busca os nós pela altura mais alta que eles se encontram até a raiz
         current_node = self.root #define o nó atual como sendo a raiz
         queue = [] #inicializa uma fila 'queue' vazia
         resultados = [] #inicializa uma fila 'resultados' vazia
@@ -95,7 +118,7 @@ class ArvoreBinaria:
             if current_node.left is not None: #depois percorre os nós da esquerda
                 queue.append(current_node.left)
         return resultados[::-1] #inverte a fila
-    
+
     def pre_ordem(self):
         resultados = [] #inicializa uma fila vazia para conter os nós presentes na árvore
         def caminho(current_node): #a função é inicializada a partir do nó atual (raiz)
@@ -106,7 +129,7 @@ class ArvoreBinaria:
                 caminho(current_node.right) #a função percorrerá pela direita
         caminho(self.root) #faz chamada da função 'caminho' iniciando na raiz
         return resultados #o resultado retornado é a fila composta de todos os nós presentes na árvore
-    
+
     def preOrdemRecursivo(self):
         self.visitaRecursiva_Pre(self.root) #faz chamada pra função recursiva Pre Ordem e inicializa ela a partir da raiz
     def visitaRecursiva_Pre(self, root):
@@ -125,7 +148,7 @@ class ArvoreBinaria:
                 caminho(current_node.right)
         caminho(self.root) #faz chamada da função 'caminho' iniciando na raiz
         return resultados #o resultado retornado é a fila composta de todos os nós presentes na árvore
-    
+
     def inOrdemRecursivo(self):
         self.visitaRecursiva_In(self.root) #faz chamada pra função recursiva In Ordem e inicializa ela a partir da raiz
     def visitaRecursiva_In(self, root):
@@ -144,7 +167,7 @@ class ArvoreBinaria:
             resultados.append(current_node.value) #a fila 'resultados' recebe os valores do nó atual percorrido pela função
         caminho(self.root) #faz chamada da função 'caminho' iniciando na raiz
         return resultados #o resultado retornado é a fila composta de todos os nós presentes na árvore
-    
+
     def posOrdemRecursivo(self):
         self.visitaRecursiva_Pos(self.root) #faz chamada pra função recursiva Pos Ordem e inicializa ela a partir da raiz
     def visitaRecursiva_Pos(self, root):
@@ -152,9 +175,9 @@ class ArvoreBinaria:
             self.visitaRecursiva_Pos(root.left) #a função percorre os nós da esquerda
             self.visitaRecursiva_Pos(root.right) #a função percorre os nós da direita
             print(root.value) #são impressos na tela um nó por linha presentes na árvore
-    
+
     #Implemetar método para calcular a altura de uma árvore, de uma sub-árvore da esquerda e sub-árvore da direita e qual sub-árvore é maior
-    
+
     #ESTUDAR VARIAÇÕES DOS MÉTODOS DE ORDENAÇÃO PARA A PROVA
 
 minha_arvore = ArvoreBinaria() #cria um objeto chamado 'minha_arvore' e define ele como sendo um objeto da classe 'ArvoreBinaria'
@@ -179,3 +202,5 @@ print(minha_arvore.pos_ordem())
 print(minha_arvore.preOrdemRecursivo())
 print(minha_arvore.inOrdemRecursivo())
 print(minha_arvore.posOrdemRecursivo())
+print(minha_arvore.get_altura())
+print(minha_arvore.conta_nos())
